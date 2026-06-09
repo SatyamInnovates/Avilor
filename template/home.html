@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avilor &#x2014; Your Coding Mentor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+
+        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+        @keyframes rotate { to { --angle: 360deg; } }
+        .border-spin { position: relative; border-radius: 1rem; border: 1px solid #3b0764; }
+        .border-spin::after { content: ''; position: absolute; inset: -2px; border-radius: 1rem; background: conic-gradient(from var(--angle), transparent 85%, #a855f7 95%, transparent 100%); -webkit-mask: linear-gradient(white,white) content-box,linear-gradient(white,white); -webkit-mask-composite: xor; mask-composite: exclude; padding: 2px; animation: rotate 6s linear infinite; filter: drop-shadow(0 0 6px #a855f7); pointer-events: none; }
+
+        .border-animate-word { position: relative; border-radius: 0.4rem; padding: 2px 12px; }
+        .border-animate-word::after { content: ''; position: absolute; inset: -2px; border-radius: 0.4rem; background: conic-gradient(from var(--angle), transparent 85%, #a855f7 95%, transparent 100%); -webkit-mask: linear-gradient(white,white) content-box,linear-gradient(white,white); -webkit-mask-composite: xor; mask-composite: exclude; padding: 2px; animation: rotate 3s linear infinite; filter: drop-shadow(0 0 8px #a855f7) drop-shadow(0 0 16px #a855f7); pointer-events: none; }
+
+        .glow-btn:hover { box-shadow: 0 0 30px #a855f7, 0 0 60px #a855f770; }
+
+        .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .feat-card { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+        .feat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(168,85,247,0.18); border-color: #7e22ce; }
+
+        .blob { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
+
+        .faq-answer { display: none; opacity: 0; transform: translateY(-8px); transition: opacity 0.3s ease, transform 0.3s ease; }
+        .faq-answer.show { display: block; opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen text-white overflow-x-hidden">
+
+    <div class="blob w-40 md:w-[500px] h-40 md:h-[500px] bg-purple-900/25 top-[-4rem] left-[-4rem]"></div>
+    <div class="blob w-28 md:w-96 h-28 md:h-96 bg-purple-800/20 top-[40%] right-[-3rem]"></div>
+    <div class="blob w-24 md:w-80 h-24 md:h-80 bg-purple-900/15 bottom-[-2rem] left-[20%]"></div>
+
+    {% include 'navbar.html' %}
+
+    <!-- HERO -->
+    <div class="text-center mt-16 md:mt-24 px-4 md:px-8">
+        <p class="text-4xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
+            Not just <span class="border-animate-word text-purple-400 px-2 md:px-4 py-1">Roadmaps</span> <br> Your coding <span class="text-purple-400">Mentor</span>
+        </p>
+        <p class="text-lg md:text-xl text-gray-400 mt-6 font-normal max-w-2xl mx-auto">
+            Stop drowning in roadmaps. Just do today's task.
+        </p>
+    </div>
+
+    <hr class="border-purple-800 my-10 md:my-16 max-w-4xl mx-auto">
+
+    <div class="flex flex-col items-center gap-4">
+        <button onclick="window.location.href='/onboarding'" class="glow-btn relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-white/5 before:skew-x-12 hover:before:translate-x-full before:transition-transform before:duration-700 bg-purple-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-lg md:text-xl hover:bg-purple-500 transition active:scale-95">
+            Get Started &#x2192;
+        </button>
+    </div>
+
+    <hr class="border-purple-800 my-10 md:my-16 max-w-4xl mx-auto">
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="max-w-5xl mx-auto px-6 py-24">
+        <div class="text-center mb-2 reveal">
+            <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Simple process</p>
+            <h2 class="text-4xl font-extrabold">How it <span class="text-purple-400">works</span></h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="reveal border-spin bg-gray-900 rounded-2xl p-7 flex flex-col gap-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-700/50 flex items-center justify-center font-extrabold text-purple-400 text-lg">1</div>
+                <h3 class="text-lg font-bold">Answer 6 questions</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Tell us your goal, experience level, and how much time you have. Takes 2 minutes.</p>
+            </div>
+            <div class="reveal border-spin bg-gray-900 rounded-2xl p-7 flex flex-col gap-4" style="transition-delay:0.1s">
+                <div class="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-700/50 flex items-center justify-center font-extrabold text-purple-400 text-lg">2</div>
+                <h3 class="text-lg font-bold">Get your AI roadmap</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">AI builds a personalized 90-day learning path with exact steps &#x2014; no guessing, no overwhelm.</p>
+            </div>
+            <div class="reveal border-spin bg-gray-900 rounded-2xl p-7 flex flex-col gap-4" style="transition-delay:0.2s">
+                <div class="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-700/50 flex items-center justify-center font-extrabold text-purple-400 text-lg">3</div>
+                <h3 class="text-lg font-bold">Do today's task</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Every day you get one task. Finish it, check it off, move forward. Simple as that.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
+
+    <!-- FEATURES -->
+    <section id="features" class="max-w-5xl mx-auto px-6 py-24">
+        <div class="text-center mb-14 reveal">
+            <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-3">Features</p>
+            <h2 class="text-4xl font-extrabold">Everything you need to <span class="text-purple-400">grow</span></h2>
+            <p class="text-gray-400 mt-3 text-base">Built for developers who are just starting out</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+            <div class="feat-card reveal col-span-2 md:col-span-1 md:row-span-2 bg-gray-900 border border-gray-800 rounded-2xl p-7 flex flex-col justify-between min-h-[280px]">
+                <div class="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-700/40 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2">AI-powered mentor</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Get unstuck any time. Ask questions, get explanations, and receive guidance tailored to where you are in your journey.</p>
+                </div>
+                <div class="mt-6 inline-flex items-center gap-2 text-purple-400 text-xs font-semibold">
+                    Coming soon <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                </div>
+            </div>
+
+            <div class="feat-card reveal bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-3" style="transition-delay:0.05s">
+                <div class="w-10 h-10 rounded-xl bg-green-900/40 border border-green-700/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h3 class="font-bold text-white">One task. Every day.</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">No overwhelm &#x2014; just your single next step, every morning.</p>
+            </div>
+
+            <div class="feat-card reveal bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-3" style="transition-delay:0.1s">
+                <div class="w-10 h-10 rounded-xl bg-blue-900/40 border border-blue-700/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                </div>
+                <h3 class="font-bold text-white">Structured roadmap</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">Clear path from zero to job-ready, built around your goal.</p>
+            </div>
+
+            <div class="feat-card reveal bg-purple-950/40 border border-purple-800/40 rounded-2xl p-6 flex flex-col gap-3" style="transition-delay:0.15s">
+                <div class="w-10 h-10 rounded-xl bg-purple-800/40 border border-purple-600/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h3 class="font-bold text-white">Built for your level</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Adapts to where you are &#x2014; complete beginner or coming back after a break.</p>
+            </div>
+
+            <div class="feat-card reveal bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-3" style="transition-delay:0.2s">
+                <div class="w-10 h-10 rounded-xl bg-yellow-900/40 border border-yellow-700/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <h3 class="font-bold text-white">Curated resources</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">Best free content handpicked &#x2014; no paid courses required.</p>
+            </div>
+
+            <div class="feat-card reveal bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-3" style="transition-delay:0.25s">
+                <div class="w-10 h-10 rounded-xl bg-pink-900/40 border border-pink-700/30 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <h3 class="font-bold text-white">Track your progress</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">See streaks, tasks done, and how far you've come.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
+
+    <!-- FAQ -->
+    <section class="max-w-2xl mx-auto px-6 py-24">
+        <div class="text-center mb-12 reveal">
+            <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-3">FAQ</p>
+            <h2 class="text-4xl font-extrabold">Questions you <span class="text-purple-400">might have</span></h2>
+        </div>
+        <div class="flex flex-col gap-3">
+
+            <div class="reveal bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition">
+                <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-white flex justify-between items-center gap-4 hover:bg-gray-800/60 transition text-sm">
+                    Why learn coding when AI can do everything?
+                    <span class="faq-icon text-purple-400 text-xl shrink-0 transition-transform duration-300">+</span>
+                </button>
+                <div class="faq-answer px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-gray-800">
+                    AI is a tool, not a replacement. The developers who know how to direct, debug, and build with AI are the ones getting hired. Without foundations, you can't even tell when AI is wrong.
+                </div>
+            </div>
+
+            <div class="reveal bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition" style="transition-delay:0.05s">
+                <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-white flex justify-between items-center gap-4 hover:bg-gray-800/60 transition text-sm">
+                    I've tried roadmaps before and always got lost
+                    <span class="faq-icon text-purple-400 text-xl shrink-0 transition-transform duration-300">+</span>
+                </button>
+                <div class="faq-answer px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-gray-800">
+                    That's exactly why Avilor exists. Roadmaps show you the whole mountain. Avilor just tells you your next step. One task. Every day. No overwhelm.
+                </div>
+            </div>
+
+            <div class="reveal bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition" style="transition-delay:0.1s">
+                <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-white flex justify-between items-center gap-4 hover:bg-gray-800/60 transition text-sm">
+                    Is this just another course platform?
+                    <span class="faq-icon text-purple-400 text-xl shrink-0 transition-transform duration-300">+</span>
+                </button>
+                <div class="faq-answer px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-gray-800">
+                    No. Avilor doesn't sell courses. It builds your personalized path and gives you one daily task. You learn from the best free resources &#x2014; Avilor just tells you what to do next.
+                </div>
+            </div>
+
+            <div class="reveal bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition" style="transition-delay:0.15s">
+                <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-white flex justify-between items-center gap-4 hover:bg-gray-800/60 transition text-sm">
+                    Will this actually work for me?
+                    <span class="faq-icon text-purple-400 text-xl shrink-0 transition-transform duration-300">+</span>
+                </button>
+                <div class="faq-answer px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-gray-800">
+                    If you show up every day and do one task &#x2014; yes. Avilor can't code for you. But it removes every excuse for not knowing what to do next.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <hr class="border-gray-800 my-10 md:my-36 max-w-4xl mx-auto">
+    <h2 class="flex justify-center text-2xl mb-20">made with love from Avilor. &#x2764;&#xFE0F;</h2>
+
+    <script>
+    function toggleFaq(btn) {
+        const answer = btn.nextElementSibling;
+        const icon = btn.querySelector('.faq-icon');
+        const isOpen = answer.classList.contains('show');
+        document.querySelectorAll('.faq-answer.show').forEach(el => {
+            el.classList.remove('show');
+            setTimeout(() => el.style.display = 'none', 300);
+            el.previousElementSibling.querySelector('.faq-icon').textContent = '+';
+            el.previousElementSibling.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+        });
+        if (!isOpen) {
+            answer.style.display = 'block';
+            setTimeout(() => answer.classList.add('show'), 10);
+            icon.textContent = '×';
+            icon.style.transform = 'rotate(45deg)';
+        }
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

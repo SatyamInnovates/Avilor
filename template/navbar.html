@@ -1,0 +1,71 @@
+<nav class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-gray-950/80 backdrop-blur-md border-b border-gray-800">
+    <span class="text-4xl font-extrabold text-white">Avilor<span class="text-purple-400">.</span></span>
+
+    <div class="hidden md:flex gap-2 bg-gray-900 rounded-full px-2 py-2 items-center">
+        <a href="/" class="px-6 py-2 rounded-full text-gray-400 hover:bg-gray-800 hover:text-white transition text-sm">Home</a>
+        <a href="/#features" class="px-6 py-2 rounded-full text-gray-400 hover:bg-gray-800 hover:text-white transition text-sm">Features</a>
+        <a href="/pricing" class="px-6 py-2 rounded-full text-gray-400 hover:bg-gray-800 hover:text-white transition text-sm">Pricing</a>
+        <a href="/about" class="px-6 py-2 rounded-full text-gray-400 hover:bg-gray-800 hover:text-white transition text-sm">About</a>
+    </div>
+
+
+    <div class="hidden md:flex items-center gap-3">
+        {% if not is_logged_in %}
+        <button class="bg-purple-600 text-white px-5 py-2 rounded-full font-semibold text-sm hover:bg-purple-500 transition" onclick="window.location.href='/login'">
+            Sign In
+        </button>
+        {% endif %}
+
+        {% if is_logged_in %}
+        <button class="bg-purple-600 text-white px-5 py-2 rounded-full font-semibold text-sm hover:bg-purple-500 transition" onclick="window.location.href='/workspace'">
+            Workspace
+        </button>
+
+        <div class="relative">
+            <button onclick="toggleUserMenu()" class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">A</button>
+            <div id="userMenu" class="hidden absolute right-0 top-10 bg-gray-900 rounded-lg shadow-lg border border-gray-800 w-40">
+                <a href="/profile" class="block px-4 py-2 text-gray-400 hover:bg-gray-800">Profile</a>
+                <a href="/logout" class="block px-4 py-2 text-gray-400 hover:bg-gray-800">Logout</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    
+    <button onclick="toggleMenu()" class="md:hidden text-white text-2xl">☰</button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobileMenu" class="hidden md:hidden bg-gray-900 border-b border-gray-800 px-6 py-4">
+    <a href="/" class="block text-gray-400 hover:text-white py-2">Home</a>
+    <a href="/#features" class="block text-gray-400 hover:text-white py-2">Features</a>
+    <a href="/pricing" class="block text-gray-400 hover:text-white py-2">Pricing</a>
+    <a href="/about" class="block text-gray-400 hover:text-white py-2">About</a>
+
+    {% if is_logged_in %}
+    <a href="/workspace" class="block text-gray-400 hover:text-white py-2">Workspace</a>
+    {% endif %}
+
+    {% if not is_logged_in %}
+    <button class="w-full bg-purple-600 text-white px-5 py-2 rounded-full font-semibold text-sm hover:bg-purple-500 transition mt-4" onclick="window.location.href='/login'">
+        Sign In
+    </button>
+    {% endif %}
+
+
+    {% if is_logged_in %}
+    <button class="w-full bg-red-600 text-white px-5 py-2 rounded-full font-semibold text-sm hover:bg-red-500 transition mt-4" onclick="window.location.href='/logout'">
+        Logout
+    </button>
+    {% endif %}
+    
+</div>
+
+<script>
+function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+}
+function toggleUserMenu() {
+    document.getElementById('userMenu').classList.toggle('hidden');
+}
+</script>

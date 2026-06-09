@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up — Avilor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .input-field { background: #111827; border: 1px solid #374151; color: white; transition: border-color 0.2s, box-shadow 0.2s; }
+        .input-field::placeholder { color: #6b7280; }
+        .input-field:focus { outline: none; border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+        .blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+
+
+        /* Card: slide up from below */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up { animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* Title: fade in */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .fade-in   { animation: fadeIn 0.4s ease both; }
+        .fade-in-2 { animation: fadeIn 0.4s 0.1s ease both; }
+
+        /* Fields: stagger slide from left */
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .field-1 { animation: slideLeft 0.35s 0.2s ease both; }
+        .field-2 { animation: slideLeft 0.35s 0.3s ease both; }
+        .field-3 { animation: slideLeft 0.35s 0.4s ease both; }
+        .field-4 { animation: slideLeft 0.35s 0.5s ease both; }
+
+        /* Button: pop in */
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.88); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .pop-in { animation: popIn 0.35s 0.55s cubic-bezier(0.34,1.56,0.64,1) both; }
+        .pop-in:hover { box-shadow: 0 0 28px #a855f7, 0 0 56px #a855f760; }
+        .line { position: fixed; background: linear-gradient(to right, transparent, #a855f7, transparent); opacity: 0.25; pointer-events: none; }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen text-white overflow-x-hidden">
+
+    <div class="blob w-36 md:w-96 h-36 md:h-96 bg-purple-900/30 top-[-3rem] right-[-3rem]"></div>
+    <div class="blob w-28 md:w-80 h-28 md:h-80 bg-purple-800/20 bottom-[-2rem] left-[-2rem]"></div>
+
+    <div class="line" style="width:380px; height:2px; top:4%; right:-3%; transform:rotate(-30deg);"></div>
+    <div class="line" style="width:220px; height:2px; top:16%; left:4%; transform:rotate(38deg);"></div>
+    <div class="line" style="width:160px; height:2px; top:8%; left:30%; transform:rotate(52deg);"></div>
+    <div class="line" style="width:310px; height:2px; top:40%; right:-2%; transform:rotate(-16deg);"></div>
+    <div class="line" style="width:260px; height:2px; top:58%; left:-3%; transform:rotate(20deg);"></div>
+    <div class="line" style="width:350px; height:2px; bottom:24%; right:4%; transform:rotate(25deg);"></div>
+    <div class="line" style="width:200px; height:2px; bottom:9%; left:10%; transform:rotate(-42deg);"></div>
+    <div class="line" style="width:290px; height:2px; bottom:42%; left:22%; transform:rotate(-16deg);"></div>
+
+    {% include 'navbar.html' %}
+
+    <div class="min-h-[calc(100vh-72px)] flex items-center justify-center px-4 py-16">
+        <div class="w-full max-w-md">
+
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold mb-2 fade-in">Start your <span class="text-purple-400">journey</span></h1>
+                <p class="text-gray-400 text-sm fade-in-2">Free forever. No credit card needed.</p>
+            </div>
+
+            <div class="slide-up bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-gray-800">
+                <form method="post" class="flex flex-col gap-4">
+                    <div class="field-1">
+                        <label class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1.5 block">Email</label>
+                        <input type="email" name="email" placeholder="you@email.com" required
+                            class="input-field w-full px-4 py-3 rounded-xl text-sm">
+                    </div>
+                    <div class="field-2">
+                        <label class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1.5 block">Username</label>
+                        <input type="text" name="username" placeholder="yourname" required
+                            class="input-field w-full px-4 py-3 rounded-xl text-sm">
+                    </div>
+                    <div class="field-3">
+                        <label class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1.5 block">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" placeholder="••••••••" required
+                                class="input-field w-full px-4 py-3 rounded-xl text-sm pr-11">
+                            <button type="button" onclick="togglePwd()"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-400 transition">
+                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field-4">
+                        <button type="submit"
+                            class="pop-in mt-2 w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-bold text-sm transition active:scale-95">
+                            Create Account →
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <p class="text-center text-gray-500 text-sm mt-6 fade-in-2">
+                Already have an account?
+                <a href="/login" class="text-purple-400 hover:text-purple-300 font-semibold transition">Login</a>
+            </p>
+            {% if error %}
+                <div class="bg-purple-600 text-white p-3 rounded mb-4">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script>
+    function togglePwd() {
+        const input = document.getElementById('password');
+        const icon = document.getElementById('eyeIcon');
+        input.type = input.type === 'password' ? 'text' : 'password';
+        icon.style.opacity = input.type === 'text' ? '0.5' : '1';
+    }
+    </script>
+</body>
+</html>

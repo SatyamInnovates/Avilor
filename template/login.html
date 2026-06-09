@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Avilor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .glow-btn:hover { box-shadow: 0 0 28px #a855f7, 0 0 56px #a855f760; }
+        .input-field { background: #111827; border: 1px solid #374151; color: white; transition: border-color 0.2s, box-shadow 0.2s; }
+        .input-field::placeholder { color: #6b7280; }
+        .input-field:focus { outline: none; border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+        .blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+
+
+        /* cale + blur */ 
+        @keyframes cardReveal {
+            from { opacity: 0; transform: scale(0.94); filter: blur(6px); }
+            to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+        }
+        .card-reveal { animation: cardReveal 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* Title*/
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .drop-in   { animation: dropIn 0.45s ease both; }
+        .drop-in-2 { animation: dropIn 0.45s 0.08s ease both; }
+
+        /* Fields: stagger slide from right */
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .field-1 { animation: slideRight 0.35s 0.15s ease both; }
+        .field-2 { animation: slideRight 0.35s 0.25s ease both; }
+        .field-3 { animation: slideRight 0.35s 0.35s ease both; }
+
+    
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shimmer-btn {
+            background: linear-gradient(90deg, #7c3aed 0%, #a855f7 40%, #c084fc 50%, #a855f7 60%, #7c3aed 100%);
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+        .shimmer-btn:hover { background-size: 200% auto; box-shadow: 0 0 28px #a855f7, 0 0 56px #a855f760; }
+        .line { position: fixed; background: linear-gradient(to right, transparent, #a855f7, transparent); opacity: 0.25; pointer-events: none; }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen text-white overflow-x-hidden">
+    
+
+    <div class="blob w-36 md:w-96 h-36 md:h-96 bg-purple-900/30 top-[-3rem] left-[-3rem]"></div>
+    <div class="blob w-28 md:w-80 h-28 md:h-80 bg-purple-800/20 bottom-[-2rem] right-[-2rem]"></div>
+
+    <div class="line" style="width:420px; height:2px; top:5%; left:-4%; transform:rotate(28deg);"></div>
+    <div class="line" style="width:200px; height:2px; top:14%; right:4%; transform:rotate(-38deg);"></div>
+    <div class="line" style="width:160px; height:2px; top:10%; right:22%; transform:rotate(-55deg);"></div>
+    <div class="line" style="width:300px; height:2px; top:44%; left:-2%; transform:rotate(14deg);"></div>
+    <div class="line" style="width:240px; height:2px; top:62%; right:-1%; transform:rotate(-22deg);"></div>
+    <div class="line" style="width:370px; height:2px; bottom:20%; left:6%; transform:rotate(-30deg);"></div>
+    <div class="line" style="width:190px; height:2px; bottom:7%; right:8%; transform:rotate(42deg);"></div>
+    <div class="line" style="width:280px; height:2px; bottom:36%; left:28%; transform:rotate(18deg);"></div>
+
+    {% include 'navbar.html' %}
+
+    <div class="min-h-[calc(100vh-72px)] flex items-center justify-center px-4 py-16">
+        
+        <div class="w-full max-w-md">
+
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold mb-2 drop-in">Welcome <span class="text-purple-400">back</span></h1>
+                <p class="text-gray-400 text-sm drop-in-2">Continue your learning journey</p>
+            </div>
+
+            <div class="card-reveal bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-gray-800">
+                {% if next %}
+                <div class="flex items-center gap-3 bg-purple-900/30 border border-purple-700/50 rounded-xl px-4 py-3 mb-2">
+                    <span class="text-purple-400 text-lg">✦</span>
+                    <p class="text-sm text-purple-300">Log in to get your personalized workspace</p>
+                </div>
+                {% endif %}
+                <form method="post" class="flex flex-col gap-4">
+                    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+                    <div class="field-1">
+                        <label class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1.5 block">Email</label>
+                        <input type="email" name="email" placeholder="you@email.com" required
+                            class="input-field w-full px-4 py-3 rounded-xl text-sm">
+                    </div>
+                    <div class="field-2">
+                        <label class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1.5 block">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" placeholder="••••••••" required
+                                class="input-field w-full px-4 py-3 rounded-xl text-sm pr-11">
+                            <button type="button" onclick="togglePwd('password','eyeLogin')"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-400 transition">
+                                <svg id="eyeLogin" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field-3">
+                        <button type="submit"
+                            class="shimmer-btn mt-2 w-full text-white py-3 rounded-xl font-bold text-sm transition active:scale-95">
+                            Login →
+                        </button>
+                    </div>
+                </form>
+                {% if error %}
+                <div class="flex items-start gap-3 bg-red-950/50 border border-red-700/50 rounded-xl px-4 py-3 mt-4">
+                    <span class="text-red-400 text-base mt-0.5">✕</span>
+                    <div>
+                        <p class="text-red-400 text-sm font-semibold">Invalid credentials</p>
+                        <p class="text-red-400/70 text-xs mt-0.5">Double-check your email and password, or <a href="/signup" class="underline hover:text-red-300 transition">create an account</a>.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <p class="text-center text-gray-500 text-sm mt-6 field-3">
+                Don't have an account?
+                <a href="/signup" class="text-purple-400 hover:text-purple-300 font-semibold transition">Sign up</a>
+            </p>
+        
+
+            {% if signup == "success" %}
+                <div class="bg-green-600 text-white p-3 rounded mb-4">
+                    Account created! Please check your email to verify.
+                </div>
+            {% endif %}
+            
+            
+        </div>
+    </div>
+
+    <script>
+    function togglePwd(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        icon.style.opacity = input.type === 'text' ? '0.5' : '1';
+    }
+    </script>
+</body>
+</html>

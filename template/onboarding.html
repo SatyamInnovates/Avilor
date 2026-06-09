@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Path — Avilor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+        @keyframes rotate { to { --angle: 360deg; } }
+        .border-animate { position: relative; border-radius: 1rem; border: 1px solid #3b0764; }
+        .border-animate::after { content: ''; position: absolute; inset: -2px; border-radius: 1rem; background: conic-gradient(from var(--angle), transparent 85%, #a855f7 95%, transparent 100%); -webkit-mask: linear-gradient(white, white) content-box, linear-gradient(white, white); -webkit-mask-composite: xor; mask-composite: exclude; padding: 2px; animation: rotate 6s linear infinite; filter: drop-shadow(0 0 6px #a855f7); pointer-events: none; }
+        .glow-btn:hover { box-shadow: 0 0 30px #a855f7, 0 0 60px #a855f770; }
+        .option-label { transition: all 0.2s; }
+        .option-label:has(input:checked) { border-color: #a855f7; background: rgba(168,85,247,0.12); }
+        .option-label:has(input:checked) span { color: white; }
+        .question { animation: fadeSlide 0.3s ease; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+        #loadingOverlay { display: none; }
+        #loadingOverlay.active { display: flex; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { animation: spin 0.9s linear infinite; }
+        @keyframes pulse-glow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+        .pulse-glow { animation: pulse-glow 1.8s ease-in-out infinite; }
+
+        /* Error message */
+        .error-msg { display: none; color: #f87171; font-size: 0.78rem; font-weight: 600; margin-top: 10px; }
+        .error-msg.show { display: flex; align-items: center; gap: 6px; animation: shake 0.35s ease; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 60% { transform: translateX(7px); } 80% { transform: translateX(-4px); } }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen text-white">
+    {% include 'navbar.html' %}
+
+   
+    <div id="loadingOverlay" class="fixed inset-0 bg-gray-950/95 z-50 flex-col items-center justify-center gap-6">
+        <div class="border-animate bg-gray-900 rounded-2xl p-10 flex flex-col items-center gap-6 max-w-sm w-full mx-4">
+            <svg class="spinner w-12 h-12 text-purple-500" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <p class="text-xl font-bold text-white">AI is personalizing your workspace…</p>
+            <p class="text-gray-400 text-sm text-center pulse-glow">Hang tight, we're setting everything up for you.</p>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center px-4 py-16">
+        <div class="w-full max-w-xl">
+            <div class="mb-10 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Build Your <span class="text-purple-400">Path</span></h1>
+                <p class="text-gray-400 text-base">Quick questions → Personalized roadmap</p>
+            </div>
+
+            
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-purple-400">Step <span id="stepNum">1</span> of 6</span>
+                    <span class="text-xs text-gray-500" id="percentNum">17%</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-1.5">
+                    <div id="progressBar" class="bg-gradient-to-r from-purple-600 to-purple-400 h-1.5 rounded-full transition-all duration-500" style="width: 17%"></div>
+                </div>
+            </div>
+
+            <div class="border-animate bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
+                <form method="post" action="/onboarding" id="onboardingForm">
+
+                    
+                    <div id="q1" class="question">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Motivation</p>
+                        <h2 class="text-2xl font-bold mb-1">{{ questions.q1.text }}</h2>
+                        <p class="text-gray-500 text-sm mb-6">People with clear motivation learn 3× faster</p>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q1.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q1" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q1" class="error-msg">⚠ Please choose one of them</p>
+                        <button type="button" onclick="nextQuestion(2)" class="glow-btn mt-8 w-full bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">
+                            Next →
+                        </button>
+                    </div>
+                    
+                    <div id="q2" class="question" style="display:none">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Interest</p>
+                        <h2 class="text-2xl font-bold mb-6">{{ questions.q2.text }}</h2>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q2.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q2" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q2" class="error-msg">⚠ Please choose one of them</p>
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="prevQuestion(1)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
+                            <button type="button" onclick="nextQuestion(3)" class="glow-btn flex-1 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">Next →</button>
+                        </div>
+                    </div>
+         
+                    <div id="q3" class="question" style="display:none">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Goal</p>
+                        <h2 class="text-2xl font-bold mb-6">{{ questions.q3.text }}</h2>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q3.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q3" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q3" class="error-msg">⚠ Please choose one of them</p>
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="prevQuestion(2)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
+                            <button type="button" onclick="nextQuestion(4)" class="glow-btn flex-1 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">Next →</button>
+                        </div>
+                    </div>
+
+                    <div id="q4" class="question" style="display:none">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Experience</p>
+                        <h2 class="text-2xl font-bold mb-6">{{ questions.q4.text }}</h2>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q4.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q4" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q4" class="error-msg">⚠ Please choose one of them</p>
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="prevQuestion(3)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
+                            <button type="button" onclick="nextQuestion(5)" class="glow-btn flex-1 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">Next →</button>
+                        </div>
+                    </div>
+
+                    <div id="q5" class="question" style="display:none">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Commitment</p>
+                        <h2 class="text-2xl font-bold mb-1">{{ questions.q5.text }}</h2>
+                        <p class="text-gray-500 text-sm mb-6">Most successful learners spend 1–2 hours daily</p>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q5.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q5" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q5" class="error-msg">⚠ Please choose one of them</p>
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="prevQuestion(4)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
+                            <button type="button" onclick="nextQuestion(6)" class="glow-btn flex-1 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">Next →</button>
+                        </div>
+                    </div>
+
+                    
+                    <div id="q6" class="question" style="display:none">
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Timeline</p>
+                        <h2 class="text-2xl font-bold mb-6">{{ questions.q6.text }}</h2>
+                        <div class="space-y-2.5">
+                            {% for option in questions.q6.options %}
+                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
+                                <input type="radio" name="q6" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
+                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p id="err-q6" class="error-msg">⚠ Please choose one of them</p>
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="prevQuestion(5)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
+                            <button type="submit" id="submitBtn" class="glow-btn relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-white/5 before:skew-x-12 hover:before:translate-x-full before:transition-transform before:duration-700 flex-1 bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-500 hover:to-purple-400 transition duration-200 active:scale-95">
+                                Generate Roadmap ✦
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function showStep(num) {
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            const el = document.getElementById('q' + num);
+            el.style.display = 'block';
+            el.style.animation = 'none';
+            el.offsetHeight;
+            el.style.animation = '';
+            const percent = Math.round((num / 6) * 100);
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('percentNum').textContent = percent + '%';
+            document.getElementById('stepNum').textContent = num;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function nextQuestion(num) {
+            const current = num - 1;
+            const selected = document.querySelector(`input[name="q${current}"]:checked`);
+            const err = document.getElementById(`err-q${current}`);
+            if (!selected) {
+                err.classList.remove('show');
+                void err.offsetWidth; // restart shake animation
+                err.classList.add('show');
+                return;
+            }
+            err.classList.remove('show');
+            showStep(num);
+        }
+        function prevQuestion(num) {
+            // clear error on current step when going back
+            const current = num + 1;
+            const err = document.getElementById(`err-q${current}`);
+            if (err) err.classList.remove('show');
+            showStep(num);
+        }
+
+        document.getElementById('onboardingForm').addEventListener('submit', function (e) {
+            const selected = document.querySelector('input[name="q6"]:checked');
+            const err = document.getElementById('err-q6');
+            if (!selected) {
+                e.preventDefault();
+                err.classList.remove('show');
+                void err.offsetWidth;
+                err.classList.add('show');
+                return;
+            }
+            const isLoggedIn = {{ 'true' if is_logged_in else 'false' }};
+            if (isLoggedIn) {
+                document.getElementById('loadingOverlay').classList.add('active');
+            }
+        });
+
+    </script>
+</body>
+</html>
