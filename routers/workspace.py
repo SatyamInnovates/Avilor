@@ -23,8 +23,7 @@ def show_workspace(request: Request):
         try:
             pre_roadmap = fetched_answer.strip().replace("```json","").replace("```","").strip()
             final_roadmap = json.loads(pre_roadmap)
-            print(final_roadmap)
-            print("roadmap created")
+        
         except Exception as e:
             print(f"JSON parse failed - {e}")
             final_roadmap = None
