@@ -105,6 +105,14 @@
                             Create Account →
                         </button>
                     </div>
+
+                    <div class="field-4">
+                        <button type="button"
+                        onclick="googleLogin()"
+                        class="w-full bg-white text-black py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition">
+                        Continue with Google
+                        </button>
+                </div>
                 </form>
             </div>
 
@@ -128,6 +136,11 @@
         input.type = input.type === 'password' ? 'text' : 'password';
         icon.style.opacity = input.type === 'text' ? '0.5' : '1';
     }
+    
+    async function googleLogin() {
+        window.location.href = "/google-login";
+    }
+        
     </script>
 </body>
 </html>

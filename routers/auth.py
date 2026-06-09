@@ -66,3 +66,17 @@ def logout():
 @router.get("/auth/callback")
 def auth_callback(request: Request):
     return RedirectResponse(url="/login?signup=success", status_code=303)
+
+
+@router.get("/signup")
+async def auth_google():
+    response = supabase.auth.sign_in_with_oauth(
+        {
+            "provider": "google",
+            "options": {
+                "redirect_to": "https://avilor.onrender.com/auth/callback"
+            }
+        }
+    )
+
+    return RedirectResponse(response.url)
