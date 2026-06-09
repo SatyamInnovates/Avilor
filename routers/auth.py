@@ -68,7 +68,7 @@ def auth_callback(request: Request):
     return RedirectResponse(url="/login?signup=success", status_code=303)
 
 
-@router.get("/signup")
+@router.get("/google-login")
 async def auth_google():
     response = supabase.auth.sign_in_with_oauth(
         {
