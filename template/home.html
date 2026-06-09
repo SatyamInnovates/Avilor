@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,7 +31,7 @@
         .faq-answer.show { display: block; opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="bg-gray-950 min-h-screen text-white overflow-x-hidden">
+<body class="bg-gray-950 text-white overflow-x-hidden">
 
     <div class="blob w-40 md:w-[500px] h-40 md:h-[500px] bg-purple-900/25 top-[-4rem] left-[-4rem]"></div>
     <div class="blob w-28 md:w-96 h-28 md:h-96 bg-purple-800/20 top-[40%] right-[-3rem]"></div>
@@ -40,21 +40,33 @@
     {% include 'navbar.html' %}
 
     <!-- HERO -->
-    <div class="text-center mt-16 md:mt-24 px-4 md:px-8">
-        <p class="text-4xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
-            Not just <span class="border-animate-word text-purple-400 px-2 md:px-4 py-1">Roadmaps</span> <br> Your coding <span class="text-purple-400">Mentor</span>
-        </p>
-        <p class="text-lg md:text-xl text-gray-400 mt-6 font-normal max-w-2xl mx-auto">
+    <div class="text-center mt-12 md:mt-24 lg:mt-32 px-4 md:px-8">
+        
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-white leading-tight">
+            Not just
+            <span class="border-animate-word text-purple-400 px-2 md:px-4 py-1">
+                Roadmaps
+            </span>
+            <br>
+            Your coding
+            <span class="text-purple-400">
+                Mentor
+            </span>
+        </h1>
+
+        <p class="text-lg sm:text-xl md:text-2xl text-gray-400 mt-6 max-w-3xl mx-auto leading-relaxed">
             Stop drowning in roadmaps. Just do today's task.
         </p>
+
     </div>
 
     <hr class="border-purple-800 my-10 md:my-16 max-w-4xl mx-auto">
 
     <div class="flex flex-col items-center gap-4">
-        <button onclick="window.location.href='/onboarding'" class="glow-btn relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-white/5 before:skew-x-12 hover:before:translate-x-full before:transition-transform before:duration-700 bg-purple-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-lg md:text-xl hover:bg-purple-500 transition active:scale-95">
-            Get Started &#x2192;
-        </button>
+        <button class="glow-btn relative overflow-hidden bg-purple-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-base sm:text-lg md:text-xl hover:bg-purple-500
+                transition active:scale-95">
+                    Get Started →
+                </button>
     </div>
 
     <hr class="border-purple-800 my-10 md:my-16 max-w-4xl mx-auto">
