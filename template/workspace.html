@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -61,7 +61,21 @@
 
     {% include 'navbar.html' %}
 
+
+
+
+
+
+
+
     <div id="main">
+            {% if role and role != 'Developer' %}
+    <div class="text-center mb-4">
+    <span class="inline-flex items-center gap-2 bg-purple-900/30 border border-purple-700/40 text-purple-300 px-4 py-2 rounded-full text-sm font-semibold">
+        🎯 You're on the path to becoming a {{ role }}
+    </span>
+</div>
+    {% endif %}
         <div class="max-w-4xl mx-auto px-6 pt-10 pb-6 flex items-center gap-4">
             <button onclick="toggleSidebar()" class="flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-800 transition shrink-0" aria-label="Toggle sidebar">
                 <span class="w-5 h-0.5 bg-gray-400"></span>

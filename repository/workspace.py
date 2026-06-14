@@ -24,12 +24,12 @@ RULES:
 5. Write like a coach. Add a why_this_matters line per phase.
 6. Directly address their challenge in the roadmap.
 7. List common traps to avoid per phase.
-8. Use the modern industry-standard stack for what they want to build.
+8. LANGUAGE: Based on what they want to build, choose ONE primary programming language that is the industry standard for that goal. In Phase 1, clearly state which language they will learn and one sentence on why it fits their goal. Use this SAME language consistently across every phase, step, task, and resource_query. Do not switch languages partway through.
 9. Create 5 to 7 phases total.
 10. Calibrate steps per phase to their available daily time: 1 hour = 3 to 4 steps, 2 hours = 4 to 5 steps, 3 hours = 5 to 6 steps, 4 or more hours = 7 to 8 steps.
 11. For EACH step, provide:
     - a clear title
-    - a resource_query: 3 to 5 plain keywords to search a tutorial (no URLs)
+    - a resource_query: 3 to 5 specific search keywords for a beginner tutorial on that exact step, and the keywords MUST include the chosen programming language (example: python for loops beginner tutorial)
     - exactly 3 practice tasks the learner does to cement that step. Tasks must be specific and small (doable in one sitting).
 
 FORMATTING:
@@ -45,7 +45,7 @@ Format:
     "steps": [
       {{
         "title": "Step title",
-        "resource_query": "keywords to search a tutorial",
+        "resource_query": "specific keywords including the language, e.g. python variables beginner tutorial",
         "tasks": ["practice task 1", "practice task 2", "practice task 3"]
       }}
     ],

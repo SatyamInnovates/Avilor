@@ -9,11 +9,19 @@ import json
 
 templates = Jinja2Templates(directory='template')
 router = APIRouter()
-
+goal_to_role = {
+        "Websites & Web Apps": "Web Developer",
+        "Phone Apps": "Mobile App Developer",
+        "AI & Smart Systems": "AI/ML Engineer",
+        "Data Analysis": "Data Analyst",
+        "Games": "Game Developer",
+        "Server & Infrastructure": "Backend / DevOps Engineer"
+        } 
 
 @router.get("/onboarding")
 def show_questions(request: Request):
     questions = get_questions()
+      
     is_logged_in = request.cookies.get("access_token") is not None
     return templates.TemplateResponse(request, 'onboarding.html', {"questions": questions, "is_logged_in": is_logged_in})
 
@@ -21,6 +29,7 @@ def show_questions(request: Request):
 @router.post("/onboarding")
 def submit_onboarding(request: Request, q1: str = Form(...), q2: str = Form(...), q3: str = Form(...), q4: str = Form(...), q5: str = Form(...), q6: str = Form(...)):
     answers = {"q1": q1, "q2": q2, "q3": q3, "q4": q4, "q5": q5, "q6": q6}
+    
     request.session["onboarding"] = answers
 
     token = request.cookies.get("access_token")
@@ -40,9 +49,14 @@ def submit_onboarding(request: Request, q1: str = Form(...), q2: str = Form(...)
         return RedirectResponse(url='/onboarding', status_code=303)
 
     ai_roadmap = ai(checked_answers)
+    
+    
+    role = goal_to_role.get(checked_answers.q2)
+    
     supabase.table('roadmaps').insert({
         "user_id": user_id,
-        "roadmap_content": ai_roadmap
+        "roadmap_content": ai_roadmap,
+        "role": role
     }).execute()
 
     request.session.pop("onboarding", None)
@@ -70,9 +84,11 @@ def continue_onboarding(request: Request):
         return RedirectResponse(url='/onboarding', status_code=303)
 
     ai_roadmap = ai(checked_answers)
+    role = goal_to_role.get(checked_answers.q2)
     supabase.table('roadmaps').insert({
         "user_id": user_id,
-        "roadmap_content": ai_roadmap
+        "roadmap_content": ai_roadmap,
+        "role" : role
     }).execute()
     
 
