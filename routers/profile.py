@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from routers.auth import supabase
+from fastapi.responses import RedirectResponse
 
 templates = Jinja2Templates(directory='template')
 router = APIRouter()

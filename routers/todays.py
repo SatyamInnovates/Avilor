@@ -9,7 +9,6 @@ router = APIRouter()
 
 
 def _get_user_id(token):
-    """Returns user_id or raises if token is invalid/expired."""
     return supabase.auth.get_user(token).user.id
 
 
