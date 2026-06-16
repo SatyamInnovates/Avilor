@@ -71,9 +71,13 @@ Format:
         "max_tokens": 8000
     }
     
-    response = requests.post(url, headers=headers, json=payload)
-    data = response.json()
-    print(data)
-    return data['choices'][0]["message"]["content"]
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=60)
+        data = response.json()
+        print(data)
+        return data['choices'][0]["message"]["content"]
+    except Exception as e:
+        print(f"AI call failed - {e}")
+        raise RuntimeError("AI roadmap generation failed. Please try again.")
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -136,14 +136,14 @@
                     <div id="progress-bar" class="progress-fill h-full bg-purple-500" style="width: 0%"></div>
                 </div>
                 {% for task in todays_data.tasks %}
-                <div class="task-row flex items-start gap-4 px-5 py-4 border-b border-gray-800/50 last:border-0"
-                     onclick="toggleTask(this, {{ todays_data.tasks|length }})">
-                    <div class="check-box mt-0.5 rounded-md">
-                        <span class="check-icon">&#x2713;</span>
+                    <div class="task-row flex items-start gap-4 px-5 py-4 border-b border-gray-800/50 last:border-0"
+                        onclick="toggleTask(this, {{ todays_data.tasks|length }}, {{ loop.index0 }})">
+                        <div class="check-box mt-0.5 rounded-md">
+                            <span class="check-icon">&#x2713;</span>
+                        </div>
+                        <span class="task-label text-sm text-gray-300 leading-relaxed">{{ task }}</span>
                     </div>
-                    <span class="task-label text-sm text-gray-300 leading-relaxed">{{ task }}</span>
-                </div>
-                {% endfor %}
+                    {% endfor %}
                 <div id="all-done" class="hidden px-5 py-5 text-center">
                     <form method="post" action="/workspace/today-focus">
                         <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition active:scale-95">
@@ -211,14 +211,36 @@
         const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         document.getElementById('today-date').textContent = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate();
 
-        function toggleTask(row, total) {
+        // sends tick/untick to backend so state survives page reload
+        function toggleTask(row, total, taskIndex) {
             row.classList.toggle('done');
+            const isDone = row.classList.contains('done');
             const done = document.querySelectorAll('.task-row.done').length;
-            const pct = Math.round((done / total) * 100);
-            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-bar').style.width = Math.round((done / total) * 100) + '%';
             document.getElementById('task-counter').textContent = done + ' / ' + total;
+            // show Next Step button only when all tasks are ticked
             document.getElementById('all-done').classList.toggle('hidden', done !== total);
+            // persist state; send checked:true on tick, checked:false on untick
+            fetch('/workspace/task-checked', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_index: taskIndex, checked: isDone })
+            });
         }
+
+        // restore which tasks were already ticked (survives page reload)
+        {% if todays_data and todays_data.completed_tasks %}
+        (function() {
+            const saved = {{ todays_data.completed_tasks | tojson }};
+            const rows = document.querySelectorAll('.task-row');
+            const total = rows.length;
+            saved.forEach(idx => { if (rows[idx]) rows[idx].classList.add('done'); });
+            const done = document.querySelectorAll('.task-row.done').length;
+            document.getElementById('progress-bar').style.width = Math.round((done / total) * 100) + '%';
+            document.getElementById('task-counter').textContent = done + ' / ' + total;
+            if (done >= total) document.getElementById('all-done').classList.remove('hidden');
+        })();
+        {% endif %}
     </script>
 </body>
 </html>

@@ -48,11 +48,18 @@ def submit_onboarding(request: Request, q1: str = Form(...), q2: str = Form(...)
         print(f"VALIDATION FAILED - {e}")
         return RedirectResponse(url='/onboarding', status_code=303)
 
-    ai_roadmap = ai(checked_answers)
-    
-    
+    try:
+        ai_roadmap = ai(checked_answers)
+    except Exception as e:
+        print(f"AI generation failed - {e}")
+        # keep answers in session so user doesn't lose them, redirect back with error
+        return templates.TemplateResponse(request, 'onboarding.html', {
+            "questions": get_questions(),
+            "is_logged_in": True,
+            "error": "AI is temporarily unavailable. Please try again in a moment."
+        })
+
     role = goal_to_role.get(checked_answers.q2)
-    
     supabase.table('roadmaps').insert({
         "user_id": user_id,
         "roadmap_content": ai_roadmap,
