@@ -56,11 +56,11 @@
             
             <div class="mb-8">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-semibold text-purple-400">Step <span id="stepNum">1</span> of 6</span>
-                    <span class="text-xs text-gray-500" id="percentNum">17%</span>
+                    <span class="text-xs font-semibold text-purple-400">Step <span id="stepNum">1</span> of 5</span>
+                    <span class="text-xs text-gray-500" id="percentNum">20%</span>
                 </div>
                 <div class="w-full bg-gray-800 rounded-full h-1.5">
-                    <div id="progressBar" class="bg-gradient-to-r from-purple-600 to-purple-400 h-1.5 rounded-full transition-all duration-500" style="width: 17%"></div>
+                    <div id="progressBar" class="bg-gradient-to-r from-purple-600 to-purple-400 h-1.5 rounded-full transition-all duration-500" style="width: 20%"></div>
                 </div>
             </div>
 
@@ -104,8 +104,10 @@
                         </div>
                     </div>
          
+                    
+
                     <div id="q3" class="question" style="display:none">
-                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Goal</p>
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Experience</p>
                         <h2 class="text-2xl font-bold mb-6">{{ questions.q3.text }}</h2>
                         <div class="space-y-2.5">
                             {% for option in questions.q3.options %}
@@ -123,8 +125,9 @@
                     </div>
 
                     <div id="q4" class="question" style="display:none">
-                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Experience</p>
-                        <h2 class="text-2xl font-bold mb-6">{{ questions.q4.text }}</h2>
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Commitment</p>
+                        <h2 class="text-2xl font-bold mb-1">{{ questions.q4.text }}</h2>
+                        <p class="text-gray-500 text-sm mb-6">Most successful learners spend 1–2 hours daily</p>
                         <div class="space-y-2.5">
                             {% for option in questions.q4.options %}
                             <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
@@ -140,10 +143,10 @@
                         </div>
                     </div>
 
+                    
                     <div id="q5" class="question" style="display:none">
-                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Commitment</p>
-                        <h2 class="text-2xl font-bold mb-1">{{ questions.q5.text }}</h2>
-                        <p class="text-gray-500 text-sm mb-6">Most successful learners spend 1–2 hours daily</p>
+                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Timeline</p>
+                        <h2 class="text-2xl font-bold mb-6">{{ questions.q5.text }}</h2>
                         <div class="space-y-2.5">
                             {% for option in questions.q5.options %}
                             <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
@@ -155,25 +158,6 @@
                         <p id="err-q5" class="error-msg">⚠ Please choose one of them</p>
                         <div class="flex gap-3 mt-8">
                             <button type="button" onclick="prevQuestion(4)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
-                            <button type="button" onclick="nextQuestion(6)" class="glow-btn flex-1 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition duration-200 active:scale-95">Next →</button>
-                        </div>
-                    </div>
-
-                    
-                    <div id="q6" class="question" style="display:none">
-                        <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-2">Timeline</p>
-                        <h2 class="text-2xl font-bold mb-6">{{ questions.q6.text }}</h2>
-                        <div class="space-y-2.5">
-                            {% for option in questions.q6.options %}
-                            <label class="option-label flex items-center p-4 border border-gray-700 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-700 group">
-                                <input type="radio" name="q6" value="{{ option }}" required class="w-4 h-4 accent-purple-500 shrink-0">
-                                <span class="ml-4 text-sm text-gray-300 group-hover:text-white transition">{{ option }}</span>
-                            </label>
-                            {% endfor %}
-                        </div>
-                        <p id="err-q6" class="error-msg">⚠ Please choose one of them</p>
-                        <div class="flex gap-3 mt-8">
-                            <button type="button" onclick="prevQuestion(5)" class="flex-1 border border-gray-700 text-gray-400 px-6 py-3 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-400 transition duration-200">← Back</button>
                             <button type="submit" id="submitBtn" class="glow-btn relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-white/5 before:skew-x-12 hover:before:translate-x-full before:transition-transform before:duration-700 flex-1 bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-500 hover:to-purple-400 transition duration-200 active:scale-95">
                                 Generate Roadmap ✦
                             </button>
@@ -194,12 +178,13 @@
             el.style.animation = 'none';
             el.offsetHeight;
             el.style.animation = '';
-            const percent = Math.round((num / 6) * 100);
+            const percent = Math.round((num / 5) * 100);
             document.getElementById('progressBar').style.width = percent + '%';
             document.getElementById('percentNum').textContent = percent + '%';
             document.getElementById('stepNum').textContent = num;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function nextQuestion(num) {
             const current = num - 1;
             const selected = document.querySelector(`input[name="q${current}"]:checked`);
@@ -222,8 +207,8 @@
         }
 
         document.getElementById('onboardingForm').addEventListener('submit', function (e) {
-            const selected = document.querySelector('input[name="q6"]:checked');
-            const err = document.getElementById('err-q6');
+            const selected = document.querySelector('input[name="q5"]:checked');
+            const err = document.getElementById('err-q5');
             if (!selected) {
                 e.preventDefault();
                 err.classList.remove('show');

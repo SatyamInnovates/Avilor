@@ -91,17 +91,15 @@ def continue_onboarding(request: Request):
         print(f"VALIDATION FAILED - {e}")
         return RedirectResponse(url='/onboarding', status_code=303)
     focus = intent_to_focus.get(checked_answers.q1, "Build solid, practical coding skills toward their goal.")
-    try:
-        ai_roadmap = ai(checked_answers, focus)
-    except Exception as e:
-        print(f"AI generation failed - {e}")
-        return RedirectResponse(url='/onboarding', status_code=303)
+    ai_roadmap = ai(checked_answers,focus)
     role = goal_to_role.get(checked_answers.q2)
     supabase.table('roadmaps').insert({
         "user_id": user_id,
         "roadmap_content": ai_roadmap,
         "role" : role
     }).execute()
+    
+
 
     request.session.pop("onboarding", None)
     return RedirectResponse(url='/workspace', status_code=303)

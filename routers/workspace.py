@@ -2,10 +2,22 @@ from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from routers.auth import supabase
 import json
-
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory='template')
+
+
+@router.get("/workspace/whats-new")
+def whats_new(request: Request):
+    token = request.cookies.get("access_token")
+    if not token:
+        return RedirectResponse(url="/login", status_code=303)
+    try:
+        supabase.auth.get_user(token)
+    except Exception:
+        return RedirectResponse(url="/login", status_code=303)
+    return templates.TemplateResponse(request, 'whats_new.html', {"is_logged_in": True})
 
 
 @router.get("/workspace")

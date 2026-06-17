@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from routers.auth import supabase
 import json
+import traceback
 
 templates = Jinja2Templates(directory='template')
 router = APIRouter()
@@ -71,7 +72,9 @@ def show_todaysfocus(request: Request):
                 "completed_tasks": completed_tasks,
             }
         except Exception as e:
-            print(f"Extraction failed - {e}")
+    
+            print(f"Extraction failed for {user_id} - {e}")
+            print(traceback.format_exc())   # shows the EXACT line + key
             todays_data = None
 
     return templates.TemplateResponse(request, 'today_focus.html', {
