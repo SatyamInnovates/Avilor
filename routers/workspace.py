@@ -45,6 +45,6 @@ def show_workspace(request: Request):
             print(f"JSON parse failed - {e}")
 
     is_logged_in = True
-    return templates.TemplateResponse(request, 'workspace.html', {"roadmap": final_roadmap, "role": user_role, "is_logged_in": is_logged_in})
+    return templates.TemplateResponse(request, 'workspace.html', {"roadmap": final_roadmap, "role": user_role, "is_logged_in": is_logged_in, "user_id": user_id})
 
 

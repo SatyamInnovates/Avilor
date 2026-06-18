@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Space Grotesk', sans-serif; }
-
         #sidebar {
             position: fixed; top: 0; left: 0;
             height: 100vh; width: 220px;
@@ -38,19 +37,11 @@
         }
         .nav-item:hover { background: rgba(168,85,247,0.1); color: #c084fc; }
         .nav-item.active { background: rgba(168,85,247,0.15); color: #a855f7; border-left: 3px solid #a855f7; }
-
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
         .fade-up { animation: fadeUp 0.4s ease both; }
-        .fade-up:nth-child(1) { animation-delay: 0.05s; }
-        .fade-up:nth-child(2) { animation-delay: 0.10s; }
-        .fade-up:nth-child(3) { animation-delay: 0.15s; }
-        .fade-up:nth-child(4) { animation-delay: 0.20s; }
-        .fade-up:nth-child(5) { animation-delay: 0.25s; }
-        .fade-up:nth-child(6) { animation-delay: 0.30s; }
-        .fade-up:nth-child(7) { animation-delay: 0.35s; }
     </style>
 </head>
 <body class="bg-gray-950 min-h-screen text-white">
@@ -75,7 +66,7 @@
     <div id="main">
         <div class="max-w-3xl mx-auto px-5 pt-10 pb-24">
 
-            <div class="flex items-center gap-4 mb-10">
+            <div class="flex items-center gap-4 mb-10 fade-up">
                 <button onclick="toggleSidebar()" class="flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-800 transition shrink-0">
                     <span class="w-5 h-0.5 bg-gray-400"></span>
                     <span class="w-5 h-0.5 bg-gray-400"></span>
@@ -87,100 +78,93 @@
                 </div>
             </div>
 
-            <div class="space-y-4">
+            <!-- ── v1.75 ── -->
+            <div class="fade-up mb-3 flex items-center gap-3">
+                <span class="text-xs font-extrabold tracking-widest text-white bg-purple-600 px-3 py-1 rounded-full">v1.75</span>
+                <span class="text-xs text-gray-500 font-medium">Latest release</span>
+                <div class="flex-1 h-px bg-gray-800"></div>
+            </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x1F9E0;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Smarter AI Prompting</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">Core</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">The AI now receives a detailed focus instruction built around your primary goal. Placement prep gets a DSA-heavy path. Startups get a ship-first structure. Job seekers get a portfolio + interview balance. Every roadmap is genuinely different based on WHY you're learning.</p>
+            <div class="fade-up mb-10 bg-gradient-to-br from-purple-900/30 to-gray-900/80 border border-purple-700/40 rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/60 border border-purple-600/50 flex items-center justify-center text-xl">&#x1F1EE;&#x1F1F3;</div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <h3 class="font-bold text-white text-lg">Best Hindi Coding Videos on YouTube &#x2014; Directly from Your Roadmap</h3>
+                            <span class="text-xs bg-green-900/60 text-green-300 border border-green-700/40 px-2 py-0.5 rounded-full">New</span>
                         </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">Every step in your roadmap now links directly to the best Hindi coding tutorial videos on YouTube for that exact topic. No more searching in English and hoping a Hindi video shows up. Each resource query is crafted to surface top-quality Hindi beginner content, so you learn in the language you actually think in. Open any step, click the YouTube link, and you land straight on Hindi tutorials for that concept.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── v1.5 ── -->
+            <div class="fade-up mb-4 flex items-center gap-3">
+                <span class="text-xs font-extrabold tracking-widest text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.5</span>
+                <span class="text-xs text-gray-600 font-medium">Previous release</span>
+                <div class="flex-1 h-px bg-gray-800"></div>
+            </div>
+
+            <div class="fade-up grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x1F9E0;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Smarter AI Prompting</p>
+                        <p class="text-xs text-gray-500">Core</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x1F3AF;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Goal-Driven Language Selection</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">AI</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">The AI now picks the right programming language for your exact goal. C++ for placements and interviews. Python for AI and data analysis. JavaScript for websites. Kotlin for Android apps. C# or C++ for games. One language used consistently through every phase, step, and task.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x1F3AF;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Goal-Driven Language Selection</p>
+                        <p class="text-xs text-gray-500">AI</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x1F4CB;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Concrete Practice Tasks</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">Quality</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">Every task is now tiny, specific, and doable in 15-30 minutes. No more vague instructions like "practice variables". Instead you get exact tasks like "write a program that stores your name and age and prints them". You always know exactly what to build.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x1F4CB;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Concrete Practice Tasks</p>
+                        <p class="text-xs text-gray-500">Quality</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x1F50D;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Better YouTube Search Queries</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">Resources</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">Every step now links to a highly specific YouTube search that always includes your chosen language. Instead of "loops tutorial" you get "python for loops beginner tutorial". You land on the right video faster with less guessing.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x1F50D;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Better YouTube Search Queries</p>
+                        <p class="text-xs text-gray-500">Resources</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x2705;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Task Progress Saved</h3>
-                                <span class="text-xs bg-green-900/60 text-green-300 border border-green-700/40 px-2 py-0.5 rounded-full">New</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">Your ticked tasks are now saved to the database. Close the tab, come back tomorrow, and your progress is exactly where you left it. When you advance to the next step, the slate clears automatically for the fresh tasks ahead.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x2705;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Task Progress Saved</p>
+                        <p class="text-xs text-gray-500">Persistence</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x1F6E1;&#xFE0F;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Secure Sessions</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">Security</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">Sessions are now signed with a secret key so your onboarding answers stay safe while you log in. All protected routes also check your token properly and redirect to login if it has expired, instead of crashing.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
+                    <span class="text-lg shrink-0">&#x1F6E1;&#xFE0F;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Secure Sessions</p>
+                        <p class="text-xs text-gray-500">Security</p>
                     </div>
                 </div>
 
-                <div class="fade-up bg-gray-900 border border-gray-800 hover:border-purple-800/50 rounded-2xl p-6 transition">
-                    <div class="flex items-start gap-4">
-                        <div class="shrink-0 w-11 h-11 rounded-xl bg-purple-900/50 border border-purple-700/40 flex items-center justify-center text-xl">&#x26A1;</div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-white">Smarter Error Handling</h3>
-                                <span class="text-xs bg-purple-900/60 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">Stability</span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">If the AI is temporarily unavailable, you now see a friendly message instead of a crash page. Your onboarding answers are preserved so you can retry without starting over. The AI call also has a 60-second timeout to prevent infinite hangs.</p>
-                        </div>
+                <div class="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 sm:col-span-2">
+                    <span class="text-lg shrink-0">&#x26A1;</span>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Smarter Error Handling</p>
+                        <p class="text-xs text-gray-500">Stability</p>
                     </div>
                 </div>
 
             </div>
+
         </div>
     </div>
 

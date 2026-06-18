@@ -11,7 +11,6 @@ from supabase import create_client
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET"))
 
-# supabase client for the middleware (same pattern as auth.py)
 
 supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 

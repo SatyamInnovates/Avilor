@@ -60,6 +60,52 @@
 
     <div id="overlay" onclick="toggleSidebar()"></div>
 
+    <!-- Permanent version badge -->
+    <div class="fixed bottom-4 right-4 z-40 bg-gray-900 border border-gray-700 text-gray-500 text-xs font-semibold px-2.5 py-1 rounded-full pointer-events-none">v1.75</div>
+
+    <!-- Targeted popup — only for specific user -->
+    {% if user_id == "987eee4d-1478-45c0-b3cb-ee7614cb4dba" %}
+    <div id="targeted-popup" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-md">
+        <div class="bg-gray-900 border border-purple-600/60 rounded-2xl px-5 py-4 shadow-2xl">
+            <div class="flex items-start gap-3">
+                <span class="text-xl shrink-0 mt-0.5">&#x1F4CA;</span>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-white mb-1">We analyzed your roadmap</p>
+                    <p class="text-xs text-gray-400 leading-relaxed">We suggest making a new roadmap with your placement goals. In v1.5 we made a lot of improvements — smarter AI prompting, better language selection, and more concrete tasks. Your current roadmap was generated before these upgrades.</p>
+                    <a href="/onboarding" class="inline-block mt-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Generate New Roadmap &#x2192;</a>
+                </div>
+                <button onclick="dismissTargeted()" class="text-gray-600 hover:text-gray-400 text-lg leading-none shrink-0">&#x2715;</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            if (!localStorage.getItem('targetedPopupSeen_987eee4d')) {
+                setTimeout(() => {
+                    const p = document.getElementById('targeted-popup');
+                    p.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                }, 1200);
+            }
+        })();
+        function dismissTargeted() {
+            document.getElementById('targeted-popup').classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            localStorage.setItem('targetedPopupSeen_987eee4d', '1');
+        }
+    </script>
+    {% endif %}
+
+    <!-- Hindi tutorial popup — dismisses on any click -->
+    <div id="hindi-popup" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-sm">
+        <div class="bg-gray-900 border border-purple-700/50 rounded-2xl px-5 py-4 shadow-2xl flex items-start gap-3">
+            <span class="text-xl shrink-0 mt-0.5">&#x1F1EE;&#x1F1F3;</span>
+            <div>
+                <p class="text-sm font-bold text-white mb-0.5">New in v1.75</p>
+                <p class="text-xs text-gray-400 leading-relaxed">Clicking <span class="text-purple-400 font-semibold">Learn &#x2192;</span> on any step now takes you directly to the best Hindi coding tutorial available on YouTube for that topic.</p>
+            </div>
+            <span class="text-gray-600 text-xs shrink-0 mt-0.5">click anywhere to dismiss</span>
+        </div>
+    </div>
+
     {% include 'navbar.html' %}
 
 
@@ -187,6 +233,16 @@
             });
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // show popup once per session, dismiss on any click
+        const popup = document.getElementById('hindi-popup');
+        if (!sessionStorage.getItem('hindiPopupSeen')) {
+            setTimeout(() => popup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none'), 800);
+        }
+        document.addEventListener('click', () => {
+            popup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            sessionStorage.setItem('hindiPopupSeen', '1');
+        }, { once: true });
     </script>
 </body>
 </html>
