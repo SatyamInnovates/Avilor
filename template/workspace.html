@@ -119,7 +119,11 @@
                                 <span class="shrink-0 mt-1 w-5 h-5 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-purple-400">&#x2713;</span>
                                 <div>
                                     <span class="text-gray-300">{{ step.title }}</span>
+                                    {% if step.video_url %}
+                                    <a href="{{ step.video_url }}" target="_blank" class="ml-2 text-purple-400 text-xs hover:text-purple-300 underline">Learn &#x2192;</a>
+                                    {% else %}
                                     <a href="https://www.youtube.com/results?search_query={{ step.resource_query }}" target="_blank" class="ml-2 text-purple-400 text-xs hover:text-purple-300 underline">Learn &#x2192;</a>
+                                    {% endif %}
                                 </div>
                             </div>
                             {% endfor %}
