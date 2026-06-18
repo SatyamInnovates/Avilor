@@ -25,6 +25,7 @@ async def track_visit(request: Request, call_next):
     path = request.url.path
     if not path.startswith(("/static", "/favicon")):
         token = request.cookies.get("access_token")
+        token = request.cookies.get("access_token")
         if token:
             try:
                 user = supabase.auth.get_user(token)
@@ -34,8 +35,11 @@ async def track_visit(request: Request, call_next):
                     on_conflict="user_id,visit_date",
                     ignore_duplicates=True
                 ).execute()
+                print(f"VISIT LOGGED: {user_id} on {today_ist()}")
             except Exception as e:
                 print(f"daily_visit error: {e}")
+        else:
+            print(f"NO TOKEN on {request.url.path}")
 
     response = await call_next(request)
     return response
