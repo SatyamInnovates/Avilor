@@ -8,6 +8,6 @@ router = APIRouter()
 
 
 @router.get("/about")
-def show_pricing(request:Request):
-    about = "asd"
-    return templates.TemplateResponse(request,"about.html",{"about":about})
+def show_about(request: Request):
+    is_logged_in = request.cookies.get("access_token") is not None
+    return templates.TemplateResponse(request, "about.html", {"is_logged_in": is_logged_in})

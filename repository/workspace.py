@@ -70,7 +70,7 @@ CORE RULES:
    - For Games: use C++ or C#.
    - For startups/products: prefer Python or JavaScript (fast to ship).
    When PRIMARY GOAL is placement, the placement language rule wins over the domain.
-   State the chosen language clearly in Phase 1. Use this SAME language in EVERY phase, step, task, and resource_query. A roadmap that does not name a specific language, or switches languages, is INVALID. Every resource_query MUST contain the language name.
+   State the chosen language clearly in Phase 1. Use this SAME language in EVERY phase, step, task, and resource_query. A roadmap that does not name a specific language, or switches languages, is INVALID. Every phase resource_query MUST contain the language name.
 2. FRONT-LOAD THE REWARD: The learner must build or solve something they can SEE working and feel proud of within the first 1 to 2 phases. Do not save all the exciting parts for the end. Early small wins are what keep beginners going, since most people quit early.
 3. TASKS MUST BE TINY AND CONCRETE: Each practice task must be doable in ONE short sitting (15 to 30 minutes) and specific enough that the learner knows exactly what to do. BAD: "practice using variables". GOOD: "write a program that stores your name and age in two variables and prints My name is X and I am Y". Never use vague verbs like practice, explore, or understand on their own.
 4. Be brutally realistic about timelines. Never promise job-ready in a few weeks.
@@ -78,11 +78,11 @@ CORE RULES:
 6. Pace phases to their daily time. Directly address their stated biggest challenge in the roadmap (for example, if they get overwhelmed, keep steps small and reassure them).
 7. Write like a coach: each why_this_matters must be personal and encouraging, connecting the phase to THEIR specific goal, not generic motivation.
 8. Create 5 to 7 phases. Calibrate steps per phase to daily time: 1 hour = 3 to 4 steps, 2 hours = 4 to 5 steps, 3 hours = 5 to 6 steps, 4 or more hours = 7 to 8 steps.
-9. For EACH step provide:
-   - a clear, specific title
-   - a resource_query: 3 to 5 search keywords for a beginner YouTube tutorial on THAT exact step, ALWAYS including the chosen language (example: python for loops beginner tutorial)
-   - exactly 3 practice tasks following RULE 3 (tiny, concrete, one sitting)
-10. Each phase has ONE real project relevant to their PRIMARY GOAL and buildable in the chosen language.
+9. For EACH phase provide a resource_query: a detailed, specific YouTube search query that covers the ENTIRE phase topic. It must include the chosen language, the phase subject, and beginner-friendly keywords so the learner finds the best tutorial playlist or full course for that phase. BAD: "python tutorial". GOOD: "python functions and scope complete beginner tutorial full course". The query must be 6 to 10 words and always include the language name.
+10. For EACH step provide:
+    - a clear, specific title
+    - exactly 3 practice tasks following RULE 3 (tiny, concrete, one sitting)
+11. Each phase has ONE real project relevant to their PRIMARY GOAL and buildable in the chosen language.
 
 FORMATTING:
 - Return ONLY a valid JSON array. No markdown. No code fences. No explanation before or after.
@@ -94,10 +94,10 @@ Format:
     "phase": "Phase name",
     "goal": "What the user will achieve",
     "why_this_matters": "One personal, encouraging sentence tied to their goal",
+    "resource_query": "detailed 6-10 word YouTube search query for this full phase, always including the language name, e.g. python functions and scope complete beginner tutorial full course",
     "steps": [
       {{
         "title": "Step title",
-        "resource_query": "specific keywords including the language, e.g. python variables beginner tutorial",
         "tasks": ["tiny concrete task 1", "tiny concrete task 2", "tiny concrete task 3"]
       }}
     ],

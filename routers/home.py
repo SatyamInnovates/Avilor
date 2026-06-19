@@ -13,7 +13,3 @@ def home(request: Request):
     is_logged_in = get_is_logged_in(request)
     return templates.TemplateResponse(request, 'home.html', {"is_logged_in": is_logged_in})
 
-@router.get("/")
-def user_icon(request: Request):
-    is_logged_in = get_is_logged_in(request)
-    return templates.TemplateResponse(request, 'navbar.html', {"is_logged_in": is_logged_in})

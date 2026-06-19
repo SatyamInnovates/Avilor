@@ -116,14 +116,14 @@
                 <div class="absolute -top-8 -right-8 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
                 <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2">Today's Step</p>
                 <h2 class="text-xl md:text-2xl font-bold text-white leading-snug mb-4">{{ todays_data.step_title }}</h2>
-                {% if todays_data.resource_query %}
-                <a href="https://www.youtube.com/results?search_query={{ todays_data.resource_query | urlencode }}"
+                {% if todays_data.video_url or todays_data.resource_query %}
+                <a href="{{ todays_data.video_url if todays_data.video_url else 'https://www.youtube.com/results?search_query=' ~ (todays_data.resource_query | urlencode) }}"
                    target="_blank"
                    class="inline-flex items-center gap-2 bg-gray-800/80 hover:bg-gray-800 border border-gray-700/60 hover:border-purple-600/50 text-gray-300 hover:text-white text-xs font-medium px-4 py-2 rounded-xl transition">
                     <svg class="w-4 h-4 text-red-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.84.55 9.38.55 9.38.55s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/>
                     </svg>
-                    Find tutorial: "{{ todays_data.resource_query }}"
+                    {% if todays_data.video_url %}Watch Tutorial{% else %}Find tutorial: "{{ todays_data.resource_query }}"{% endif %}
                 </a>
                 {% endif %}
             </div>

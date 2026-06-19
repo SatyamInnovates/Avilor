@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.get("/pricing")
-def show_pricing(request:Request):
-    pricing = "not set yet it is free"
-    return templates.TemplateResponse(request,"pricing.html",{"pricing":pricing})
+def show_pricing(request: Request):
+    is_logged_in = request.cookies.get("access_token") is not None
+    return templates.TemplateResponse(request, "pricing.html", {"is_logged_in": is_logged_in})
 

@@ -94,6 +94,20 @@
     </script>
     {% endif %}
 
+    <!-- Hurrah popup — specific users only, dismisses on any click -->
+    {% if user_id in ["a95ad1c5-10fa-4ac2-9c49-d39eb9cc46da", "fbaa8c99-24d8-4763-b20d-80551f2fdbe5"] %}
+    <div id="hurrah-popup" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 opacity-0 -translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-md">
+        <div class="bg-gray-900 border border-yellow-500/50 rounded-2xl px-5 py-4 shadow-2xl flex items-start gap-3">
+            <span class="text-xl shrink-0 mt-0.5">&#x1F389;</span>
+            <div class="flex-1">
+                <p class="text-sm font-bold text-yellow-300 mb-0.5">Hurrah! You saved a lot of time</p>
+                <p class="text-xs text-gray-400 leading-relaxed">Phases 2, 3 &amp; 4 are all covered in just one video — click <span class="text-purple-400 font-semibold">Learn</span> on any of those phases to watch it.</p>
+            </div>
+            <span class="text-gray-600 text-xs shrink-0 mt-0.5">click anywhere to dismiss</span>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Hindi tutorial popup — dismisses on any click -->
     <div id="hindi-popup" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-sm">
         <div class="bg-gray-900 border border-purple-700/50 rounded-2xl px-5 py-4 shadow-2xl flex items-start gap-3">
@@ -160,10 +174,9 @@
                     <div class="mb-5">
                         <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-3">Learning Steps</p>
 
-                        {% if user_id == "938f74c1-ca66-4493-b9ab-fa0c593a6736" and phase.steps[0].video_url %}
-                        <!-- Bracket design: nested brace → single Learn button -->
+                        {% if user_id in ["938f74c1-ca66-4493-b9ab-fa0c593a6736", "a95ad1c5-10fa-4ac2-9c49-d39eb9cc46da"] and phase.steps[0].video_url %}
+                        <!-- Special UIDs: bracket with direct step video URL -->
                         <div class="flex items-stretch gap-0">
-                            <!-- Steps list -->
                             <div class="flex-1 space-y-3 pr-1">
                                 {% for step in phase.steps %}
                                 <div class="flex items-start gap-3">
@@ -172,13 +185,15 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <!-- Nested closing brace → Learn button -->
                             <div class="flex items-center shrink-0">
                                 <div class="self-stretch relative" style="width:10px;">
                                     <div class="absolute top-0 right-0 border-t border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 3px 0 0;"></div>
                                     <div class="absolute bottom-0 right-0 border-b border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 0 3px 0;"></div>
                                 </div>
+
+
                                 <div style="width:6px; height:1px;" class="bg-purple-500/70"></div>
+                                
                                 <a href="{{ phase.steps[0].video_url }}" target="_blank"
                                    class="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-2 rounded-lg transition active:scale-95 whitespace-nowrap shadow-lg shadow-purple-900/40">
                                     <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -189,8 +204,35 @@
                             </div>
                         </div>
 
+                        {% elif phase.resource_query or phase.video_url %}
+                        <!-- New format: bracket with phase video_url or resource_query search -->
+                        <div class="flex items-stretch gap-0">
+                            <div class="flex-1 space-y-3 pr-1">
+                                {% for step in phase.steps %}
+                                <div class="flex items-start gap-3">
+                                    <span class="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-purple-400">&#x2713;</span>
+                                    <span class="text-gray-300 text-sm leading-snug">{{ step.title }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="flex items-center shrink-0">
+                                <div class="self-stretch relative" style="width:10px;">
+                                    <div class="absolute top-0 right-0 border-t border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 3px 0 0;"></div>
+                                    <div class="absolute bottom-0 right-0 border-b border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 0 3px 0;"></div>
+                                </div>
+                                <div style="width:6px; height:1px;" class="bg-purple-500/70"></div>
+                                <a href="{{ phase.video_url or ('https://www.youtube.com/results?search_query=' ~ (phase.resource_query | urlencode)) }}" target="_blank"
+                                   class="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-2 rounded-lg transition active:scale-95 whitespace-nowrap shadow-lg shadow-purple-900/40">
+                                    <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.84.55 9.38.55 9.38.55s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/>
+                                    </svg>
+                                    Learn
+                                </a>
+                            </div>
+                        </div>
+
                         {% else %}
-                        <!-- Normal steps for everyone else -->
+                        <!-- Old roadmap format: per-step Learn links (unchanged) -->
                         <ul class="space-y-2">
                             {% for step in phase.steps %}
                             <div class="flex items-start gap-3 mb-3">
@@ -199,7 +241,7 @@
                                     <span class="text-gray-300">{{ step.title }}</span>
                                     {% if step.video_url %}
                                     <a href="{{ step.video_url }}" target="_blank" class="ml-2 text-purple-400 text-xs hover:text-purple-300 underline">Learn &#x2192;</a>
-                                    {% else %}
+                                    {% elif step.resource_query %}
                                     <a href="https://www.youtube.com/results?search_query={{ step.resource_query }}" target="_blank" class="ml-2 text-purple-400 text-xs hover:text-purple-300 underline">Learn &#x2192;</a>
                                     {% endif %}
                                 </div>
@@ -268,7 +310,19 @@
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // show popup once per session, dismiss on any click
+        // hurrah popup — specific users only, once per session
+        const hurrahPopup = document.getElementById('hurrah-popup');
+        if (hurrahPopup && !sessionStorage.getItem('hurrahPopupSeen')) {
+            setTimeout(() => hurrahPopup.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none'), 1000);
+        }
+        if (hurrahPopup) {
+            document.addEventListener('click', () => {
+                hurrahPopup.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+                sessionStorage.setItem('hurrahPopupSeen', '1');
+            }, { once: true });
+        }
+
+        // show hindi popup once per session, dismiss on any click
         const popup = document.getElementById('hindi-popup');
         if (!sessionStorage.getItem('hindiPopupSeen')) {
             setTimeout(() => popup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none'), 800);
