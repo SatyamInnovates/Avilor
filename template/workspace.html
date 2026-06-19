@@ -159,6 +159,38 @@
                     {% if phase.steps %}
                     <div class="mb-5">
                         <p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-3">Learning Steps</p>
+
+                        {% if user_id == "938f74c1-ca66-4493-b9ab-fa0c593a6736" and phase.steps[0].video_url %}
+                        <!-- Bracket design: nested brace → single Learn button -->
+                        <div class="flex items-stretch gap-0">
+                            <!-- Steps list -->
+                            <div class="flex-1 space-y-3 pr-1">
+                                {% for step in phase.steps %}
+                                <div class="flex items-start gap-3">
+                                    <span class="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-purple-400">&#x2713;</span>
+                                    <span class="text-gray-300 text-sm leading-snug">{{ step.title }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!-- Nested closing brace → Learn button -->
+                            <div class="flex items-center shrink-0">
+                                <div class="self-stretch relative" style="width:10px;">
+                                    <div class="absolute top-0 right-0 border-t border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 3px 0 0;"></div>
+                                    <div class="absolute bottom-0 right-0 border-b border-r border-purple-500/70" style="width:6px; height:50%; border-radius:0 0 3px 0;"></div>
+                                </div>
+                                <div style="width:6px; height:1px;" class="bg-purple-500/70"></div>
+                                <a href="{{ phase.steps[0].video_url }}" target="_blank"
+                                   class="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-2 rounded-lg transition active:scale-95 whitespace-nowrap shadow-lg shadow-purple-900/40">
+                                    <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.84.55 9.38.55 9.38.55s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/>
+                                    </svg>
+                                    Learn
+                                </a>
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <!-- Normal steps for everyone else -->
                         <ul class="space-y-2">
                             {% for step in phase.steps %}
                             <div class="flex items-start gap-3 mb-3">
@@ -174,6 +206,8 @@
                             </div>
                             {% endfor %}
                         </ul>
+                        {% endif %}
+
                     </div>
                     {% endif %}
 
