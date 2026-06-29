@@ -1,5 +1,6 @@
 import requests
 import os
+import json
 
 
 # Maps the user's PRIMARY GOAL (q1) to a concrete instruction that shapes
@@ -131,3 +132,105 @@ Format:
     except Exception as e:
         print(f"AI call failed - {e}")
         raise RuntimeError("AI roadmap generation failed. Please try again.")
+
+
+
+
+
+
+def validate_answers(phase_name: str, topic: str, questions: list, answers: list) -> bool:
+    api_key = os.getenv("GROQ_API_KEY")
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    qa_text = "\n".join(
+        f"Q{i+1}: {q}\nA{i+1}: {answers[i] if i < len(answers) else '(no answer)'}"
+        for i, q in enumerate(questions)
+    )
+    prompt = (
+        f"You are evaluating a coding student's quiz answers.\n\n"
+        f"Phase: {phase_name}\nTopic: {topic}\n\n"
+        f"{qa_text}\n\n"
+        f"Did the student show basic understanding of the topic? "
+        f"Accept only if the answer demonstrates actual understanding of the concept, not just effort."
+        f"Reject empty answers, 'I don't know', completely off-topic, or zero understanding.\n"
+        f"Respond with only one word: PASS or FAIL"
+    )
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    payload = {
+        "model": "llama-3.3-70b-versatile",
+        "messages": [
+            {"role": "system", "content": "You are a strict but fair quiz evaluator. Respond only with PASS or FAIL."},
+            {"role": "user", "content": prompt}
+        ],
+        "max_tokens": 10
+    }
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=20)
+        result = r.json()['choices'][0]['message']['content'].strip().upper()
+        return "PASS" in result
+    except Exception as e:
+        print(f"validate_answers failed: {e}")
+        return False
+
+
+def tutor_chat_reply(phase_name: str, topic: str, history: list, message: str) -> str:
+    api_key = os.getenv("GROQ_API_KEY")
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    system_prompt = (
+        f"You are a patient, encouraging coding tutor. "
+        f"The student is learning: {phase_name} (topic: {topic}). "
+        f"They didn't pass the quiz for this phase. Help them understand through conversation. "
+        f"Keep answers short and clear — 2-4 sentences max. Use simple examples. "
+        f"After they seem to understand, encourage them to go back and try the quiz again."
+    )
+    messages = [{"role": "system", "content": system_prompt}] + history[-10:] + [{"role": "user", "content": message}]
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    payload = {
+        "model": "llama-3.3-70b-versatile",
+        "messages": messages,
+        "max_tokens": 400
+    }
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=30)
+        return r.json()['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        print(f"tutor_chat_reply failed: {e}")
+        return "Sorry, I'm having trouble right now. Please try again."
+
+
+def generate_questions(phase_name: str, topic: str) -> list:
+    api_key = os.getenv("GROQ_API_KEY")
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    prompt = (
+        f"A student just finished watching a tutorial video on this coding topic.\n\n"
+        f"Phase: {phase_name}\n"
+        f"Topic: {topic}\n\n"
+        f"Generate exactly 2 short-answer questions to verify they understood the key concepts. "
+        f"Make questions specific, answerable in 1-2 sentences, and test real understanding.\n"
+        f"Return ONLY a valid JSON array of 2 strings. No markdown, no explanation.\n"
+        f'Example: ["What is the difference between X and Y?", "Write one line of code that does Z"]'
+    )
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    payload = {
+        "model": "llama-3.3-70b-versatile",
+        "messages": [
+            {"role": "system", "content": "You are a concise coding coach who creates quiz questions. Return only JSON."},
+            {"role": "user", "content": prompt}
+        ],
+        "max_tokens": 300
+    }
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=20)
+        content = r.json()['choices'][0]['message']['content'].strip()
+        if content.startswith("```"):
+            content = content.split("```")[1]
+            if content.startswith("json"):
+                content = content[4:]
+        questions = json.loads(content.strip())
+        if isinstance(questions, list) and len(questions) >= 2:
+            return questions[:3]
+    except Exception as e:
+        print(f"generate_questions failed: {e}")
+    return [
+        "What was the main concept covered in this phase?",
+        "Describe one practical thing you can now do that you couldn't do before."
+    ]

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from dotenv import load_dotenv
 import os
 load_dotenv()
-from routers import home, auth, profile, onboarding, workspace, pricing, about, todays
+from routers import home, auth, profile, onboarding, workspace, pricing, about, todays, tutor
 from starlette.middleware.sessions import SessionMiddleware
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -48,3 +48,4 @@ app.include_router(workspace.router)
 app.include_router(pricing.router)
 app.include_router(about.router)
 app.include_router(todays.router)
+app.include_router(tutor.router)

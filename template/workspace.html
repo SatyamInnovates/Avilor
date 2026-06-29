@@ -52,7 +52,8 @@
         </div>
         <a href="/workspace" class="nav-item active">&#x1F5FA;&#xFE0F; Roadmap</a>
         <a href="/workspace/today-focus" class="nav-item">&#x2705; Today's Focus</a>
-        <a href="/workspace/whats-new" class="nav-item">&#x2728; What's New</a>
+<a href="/workspace/whats-new" class="nav-item">&#x2728; What's New</a>
+        <a href="/workspace/tutor" class="nav-item">&#x1F4AC; Tutor</a>
         <div class="mt-auto pt-4 border-t border-gray-800">
             <a href="/profile" class="nav-item">&#x1F464; Profile</a>
         </div>
@@ -61,7 +62,7 @@
     <div id="overlay" onclick="toggleSidebar()"></div>
 
     <!-- Permanent version badge -->
-    <div class="fixed bottom-4 right-4 z-40 bg-gray-900 border border-gray-700 text-gray-500 text-xs font-semibold px-2.5 py-1 rounded-full pointer-events-none">v1.75</div>
+    <div class="fixed bottom-4 right-4 z-40 bg-gray-900 border border-gray-700 text-gray-500 text-xs font-semibold px-2.5 py-1 rounded-full pointer-events-none">v2.0</div>
 
     <!-- Targeted popup — only for specific user -->
     {% if user_id == "987eee4d-1478-45c0-b3cb-ee7614cb4dba" %}
@@ -108,15 +109,39 @@
     </div>
     {% endif %}
 
-    <!-- Hindi tutorial popup — dismisses on any click -->
-    <div id="hindi-popup" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-sm">
-        <div class="bg-gray-900 border border-purple-700/50 rounded-2xl px-5 py-4 shadow-2xl flex items-start gap-3">
-            <span class="text-xl shrink-0 mt-0.5">&#x1F1EE;&#x1F1F3;</span>
-            <div>
-                <p class="text-sm font-bold text-white mb-0.5">New in v1.75</p>
-                <p class="text-xs text-gray-400 leading-relaxed">Clicking <span class="text-purple-400 font-semibold">Learn &#x2192;</span> on any step now takes you directly to the best Hindi coding tutorial available on YouTube for that topic.</p>
+    {% if user_id == "f3d5003c-f693-4146-a5d7-ca2b8a49e1c0" %}
+    <div id="hurrah-popup-f3d5" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 opacity-0 -translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-md">
+        <div class="bg-gray-900 border border-yellow-500/50 rounded-2xl px-5 py-4 shadow-2xl flex items-start gap-3">
+            <span class="text-xl shrink-0 mt-0.5">&#x1F389;</span>
+            <div class="flex-1">
+                <p class="text-sm font-bold text-yellow-300 mb-0.5">Hurrah! You saved a lot of time</p>
+                <p class="text-xs text-gray-400 leading-relaxed">Phase 1 &amp; 2 are covered in just one video — click <span class="text-purple-400 font-semibold">Learn</span> on either phase to watch it.</p>
             </div>
             <span class="text-gray-600 text-xs shrink-0 mt-0.5">click anywhere to dismiss</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- v2.0 what's new popup — once per session -->
+    <div id="v2-popup" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 w-[90%] max-w-md">
+        <div class="bg-gray-900 border border-purple-600/60 rounded-2xl px-5 py-4 shadow-2xl">
+            <div class="flex items-start gap-3">
+                <span class="text-xl shrink-0 mt-0.5">&#x1F389;</span>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-sm font-bold text-white">Avilor v2.0 is here</p>
+                        <span class="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full font-semibold">New</span>
+                    </div>
+                    <ul class="text-xs text-gray-400 leading-relaxed space-y-0.5">
+                        <li>&#x2705; <span class="text-gray-300">Micro-Check quiz after every phase</span></li>
+                        <li>&#x1F4AC; <span class="text-gray-300">Personal AI Tutor with chat history</span></li>
+                        <li>&#x1F512; <span class="text-gray-300">Phase locking — unlock as you progress</span></li>
+                        <li>&#x2728; <span class="text-gray-300">Ask AI on every roadmap step</span></li>
+                    </ul>
+                    <a href="/workspace/whats-new" class="inline-block mt-3 text-xs text-purple-400 hover:text-purple-300 transition font-semibold">See full changelog &#x2192;</a>
+                </div>
+                <button onclick="dismissV2Popup()" class="text-gray-600 hover:text-gray-400 text-lg leading-none shrink-0">&#x2715;</button>
+            </div>
         </div>
     </div>
 
@@ -152,7 +177,8 @@
         <div class="max-w-4xl mx-auto px-6 pb-20 space-y-6">
             {% if roadmap %}
                 {% for phase in roadmap %}
-                <div class="phase-card reveal bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-purple-800/60">
+                {% set ns = namespace(phase_idx=loop.index0) %}
+                <div class="phase-card reveal bg-gray-900 border rounded-2xl p-7 {% if loop.index0 in completed_phases %}border-green-700/50{% elif loop.index0 == completed_phases | length %}border-purple-700/60 hover:border-purple-600/70{% else %}border-gray-800/30 opacity-50{% endif %}">
                     <div class="flex items-start gap-4 mb-5">
                         <div class="shrink-0 w-10 h-10 rounded-xl bg-purple-900/50 border border-purple-700/50 flex items-center justify-center font-extrabold text-purple-400">
                             {{ loop.index }}
@@ -161,7 +187,14 @@
                             <h2 class="text-xl font-bold text-white">{{ phase.phase }}</h2>
                             <p class="text-gray-400 text-sm mt-0.5">{{ phase.goal }}</p>
                         </div>
-                        <span class="ml-auto shrink-0 text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full">&#x23F1; {{ phase.duration }}</span>
+                        <div class="ml-auto flex items-center gap-2 shrink-0">
+                            {% if loop.index0 in completed_phases %}
+                            <span class="text-xs bg-green-900/40 text-green-400 border border-green-700/40 px-2.5 py-0.5 rounded-full font-semibold">&#x2713; Done</span>
+                            {% elif loop.index0 > completed_phases | length %}
+                            <span class="text-xs bg-gray-800 text-gray-600 border border-gray-700/30 px-2.5 py-0.5 rounded-full">&#x1F512; Locked</span>
+                            {% endif %}
+                            <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full">&#x23F1; {{ phase.duration }}</span>
+                        </div>
                     </div>
 
                     {% if phase.why_this_matters %}
@@ -181,7 +214,8 @@
                                 {% for step in phase.steps %}
                                 <div class="flex items-start gap-3">
                                     <span class="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-purple-400">&#x2713;</span>
-                                    <span class="text-gray-300 text-sm leading-snug">{{ step.title }}</span>
+                                    <span class="text-gray-300 text-sm leading-snug flex-1">{{ step.title }}</span>
+                                    <a href="/workspace/tutor?phase={{ ns.phase_idx }}&step={{ step.title | urlencode }}" class="shrink-0 text-xs text-purple-500/60 hover:text-purple-400 transition mt-0.5">Ask AI</a>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -211,7 +245,8 @@
                                 {% for step in phase.steps %}
                                 <div class="flex items-start gap-3">
                                     <span class="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-purple-400">&#x2713;</span>
-                                    <span class="text-gray-300 text-sm leading-snug">{{ step.title }}</span>
+                                    <span class="text-gray-300 text-sm leading-snug flex-1">{{ step.title }}</span>
+                                    <a href="/workspace/tutor?phase={{ ns.phase_idx }}&step={{ step.title | urlencode }}" class="shrink-0 text-xs text-purple-500/60 hover:text-purple-400 transition mt-0.5">Ask AI</a>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -244,6 +279,7 @@
                                     {% elif step.resource_query %}
                                     <a href="https://www.youtube.com/results?search_query={{ step.resource_query }}" target="_blank" class="ml-2 text-purple-400 text-xs hover:text-purple-300 underline">Learn &#x2192;</a>
                                     {% endif %}
+                                    <a href="/workspace/tutor?phase={{ ns.phase_idx }}&step={{ step.title | urlencode }}" class="ml-2 text-purple-500/60 text-xs hover:text-purple-400 transition">Ask AI</a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -273,8 +309,50 @@
                         </ul>
                     </div>
                     {% endif %}
+
+                    {% if loop.index0 in completed_phases %}
+                    <div class="mt-5 pt-4 border-t border-green-900/30 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-green-900/40 border border-green-700 flex items-center justify-center text-xs text-green-400">&#x2713;</span>
+                        <span class="text-green-400 text-sm font-semibold">Phase Complete</span>
+                    </div>
+                    {% elif loop.index0 == completed_phases | length %}
+                    <div class="mt-6 pt-5 border-t border-gray-800">
+                        <p class="text-xs text-gray-600 uppercase tracking-widest mb-3 font-semibold">Lock this phase in</p>
+                        <div class="flex flex-wrap gap-3">
+                            {% if phase.video_url or phase.resource_query %}
+                            <a href="{{ phase.video_url or ('https://www.youtube.com/results?search_query=' ~ (phase.resource_query | urlencode)) }}" target="_blank"
+                               class="inline-flex items-center gap-2 bg-red-950/60 hover:bg-red-900/40 border border-red-700/30 text-gray-300 hover:text-white text-sm px-4 py-2.5 rounded-xl transition font-medium">
+                                <svg class="w-4 h-4 text-red-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.84.55 9.38.55 9.38.55s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/>
+                                </svg>
+                                Watch This Video
+                            </a>
+                            {% endif %}
+                            <button onclick="startMicroCheck({{ loop.index0 }})"
+                                    class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition active:scale-95">
+                                I Finished Watching &#x2192;
+                            </button>
+                        </div>
+                        <div id="mc-area-{{ loop.index0 }}" class="hidden mt-5">
+                            <div id="mc-loading-{{ loop.index0 }}" class="text-gray-500 text-sm py-1">Generating questions...</div>
+                            <div id="mc-questions-{{ loop.index0 }}" class="hidden space-y-4"></div>
+                            <button onclick="submitMicroCheck({{ loop.index0 }})" id="mc-submit-{{ loop.index0 }}"
+                                    class="hidden mt-4 bg-green-600 hover:bg-green-500 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition active:scale-95">
+                                Submit Answers &#x2713;
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
                 {% endfor %}
+                {% if completed_phases | length >= roadmap | length and roadmap | length > 0 %}
+                <div class="phase-card reveal bg-gradient-to-br from-green-900/20 to-gray-900 border border-green-700/30 rounded-2xl p-8 text-center">
+                    <div class="text-4xl mb-3">&#x1F3C6;</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Roadmap Complete!</h3>
+                    <p class="text-gray-400 text-sm">You've locked in every phase. Time to build something real.</p>
+                </div>
+                {% endif %}
             {% else %}
             <div class="text-center py-20">
                 <p class="text-gray-500 text-lg mb-2">No roadmap found.</p>
@@ -310,6 +388,13 @@
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // auto-trigger micro-check if returning from tutor
+        const retryPhase = new URLSearchParams(window.location.search).get('retry');
+        if (retryPhase !== null) {
+            history.replaceState({}, '', '/workspace');
+            setTimeout(() => startMicroCheck(parseInt(retryPhase)), 600);
+        }
+
         // hurrah popup — specific users only, once per session
         const hurrahPopup = document.getElementById('hurrah-popup');
         if (hurrahPopup && !sessionStorage.getItem('hurrahPopupSeen')) {
@@ -322,15 +407,96 @@
             }, { once: true });
         }
 
-        // show hindi popup once per session, dismiss on any click
-        const popup = document.getElementById('hindi-popup');
-        if (!sessionStorage.getItem('hindiPopupSeen')) {
-            setTimeout(() => popup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none'), 800);
+        // hurrah popup for f3d5003c — once per session
+        const hurrahPopupF3d5 = document.getElementById('hurrah-popup-f3d5');
+        if (hurrahPopupF3d5 && !sessionStorage.getItem('hurrahPopupF3d5Seen')) {
+            setTimeout(() => hurrahPopupF3d5.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none'), 1000);
         }
-        document.addEventListener('click', () => {
-            popup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-            sessionStorage.setItem('hindiPopupSeen', '1');
-        }, { once: true });
+        if (hurrahPopupF3d5) {
+            document.addEventListener('click', () => {
+                hurrahPopupF3d5.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+                sessionStorage.setItem('hurrahPopupF3d5Seen', '1');
+            }, { once: true });
+        }
+
+        // v2.0 popup — once per session
+        const v2popup = document.getElementById('v2-popup');
+        if (v2popup && !sessionStorage.getItem('v2PopupSeen')) {
+            setTimeout(() => v2popup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none'), 800);
+        }
+        function dismissV2Popup() {
+            v2popup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            sessionStorage.setItem('v2PopupSeen', '1');
+        }
+
+        async function startMicroCheck(phaseIndex) {
+            const area = document.getElementById('mc-area-' + phaseIndex);
+            const loading = document.getElementById('mc-loading-' + phaseIndex);
+            const questionsDiv = document.getElementById('mc-questions-' + phaseIndex);
+            const submitBtn = document.getElementById('mc-submit-' + phaseIndex);
+
+            area.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            questionsDiv.classList.add('hidden');
+            submitBtn.classList.add('hidden');
+
+            try {
+                const res = await fetch('/workspace/micro-check/' + phaseIndex);
+                const data = await res.json();
+                loading.classList.add('hidden');
+                questionsDiv.classList.remove('hidden');
+
+                let html = '<p class="text-xs text-purple-400 font-semibold uppercase tracking-widest mb-3">Quick Check — answer in your own words</p>';
+                data.questions.forEach((q, i) => {
+                    html += `<div><p class="text-sm text-gray-300 font-medium mb-1.5">${i + 1}. ${q}</p><textarea id="mc-ans-${phaseIndex}-${i}" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-200 resize-none focus:outline-none focus:border-purple-500 transition placeholder-gray-600" rows="2" placeholder="Your answer..."></textarea></div>`;
+                });
+
+                questionsDiv.innerHTML = html;
+                submitBtn.classList.remove('hidden');
+            } catch(e) {
+                loading.textContent = 'Could not load questions — click Submit to mark this phase complete.';
+                submitBtn.classList.remove('hidden');
+            }
+        }
+
+        async function submitMicroCheck(phaseIndex) {
+            const btn = document.getElementById('mc-submit-' + phaseIndex);
+            btn.textContent = 'Checking...';
+            btn.disabled = true;
+
+            const questionsDiv = document.getElementById('mc-questions-' + phaseIndex);
+            const questions = [];
+            const answers = [];
+            if (questionsDiv) {
+                questionsDiv.querySelectorAll('p').forEach(p => {
+                    const t = p.textContent.replace(/^\d+\.\s*/, '').trim();
+                    if (t) questions.push(t);
+                });
+                questionsDiv.querySelectorAll('textarea').forEach(ta => answers.push(ta.value.trim()));
+            }
+
+            try {
+                const res = await fetch('/workspace/micro-check/submit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({phase_index: phaseIndex, questions, answers})
+                });
+                const data = await res.json();
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    btn.textContent = 'Error — try again';
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                btn.textContent = 'Error — try again';
+                btn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
