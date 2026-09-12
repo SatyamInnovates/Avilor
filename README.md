@@ -31,3 +31,6 @@ Built solo by Satyam Kumar — a 14-year-old developer building real products, n
 
 X: https://x.com/notifications
 LinkedIn: https://www.linkedin.com/in/satyam-kumar-5b40923bb/
+
+
+Avilor closed.
